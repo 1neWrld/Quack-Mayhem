@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,6 +60,9 @@ public class MoveAction : BaseAction
         {
             animator.SetBool(IS_WALKING, false);
             isActive = false;
+
+            OnActionComplete();
+
         }
 
         // Handles rotation by manipulating the units forward direction... Faces towards target position
@@ -69,8 +73,9 @@ public class MoveAction : BaseAction
 
 
     // function to move object to targeted position
-    public void Move(GridPosition gridPosition)
+    public void Move(GridPosition gridPosition, Action onActionComplete)
     {
+        this.OnActionComplete= onActionComplete;
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         isActive = true;
     }
@@ -117,6 +122,11 @@ public class MoveAction : BaseAction
         }
 
         return validGridPositionList;
+    }
+
+    public override string GetActionName()
+    {
+        return "Move";
     }
 
 }

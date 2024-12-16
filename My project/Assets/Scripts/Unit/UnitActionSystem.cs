@@ -1,16 +1,20 @@
 using System;
 using UnityEngine;
 
-// Allocated the script to run before default time so it's functions are read 1st before any other scripts functions
+/* 
+ * Allocated the script to run before default time so it's functions are read 1st before any other scripts functions
+ * Script to handle the selected unit and the selected action
+ * To make sure isBusy is cleared after a player done a specific action. We use Action as a delegate to notify when the action is done
+*/
 public class UnitActionSystem : MonoBehaviour
 {
 
     public static UnitActionSystem Instance { get; private set; }
 
-    public event EventHandler OnSelectedUnit;
+    public event EventHandler OnSelectedUnitChanged;
 
 
-    // Script to handle the selected unit and the selected action
+
 
     // field of type unit to store the selectedUnit
     [SerializeField] private Unit selectedUnit;
@@ -41,6 +45,7 @@ public class UnitActionSystem : MonoBehaviour
          * Clear isBusy state by using delegates
          * pass through the clearbusy function as a delegate. 
          * which sets the isbusy state to false 
+         * Ensures that UnitActionSystem is aware of when an action is completed
         */
 
         if (Input.GetMouseButtonDown(0))
@@ -52,10 +57,13 @@ public class UnitActionSystem : MonoBehaviour
             if (selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
             {
                 SetBusy();
-                selectedUnit.GetMoveAction().Move(mouseGridPosition);
+
+                selectedUnit.GetMoveAction().Move(mouseGridPosition, ClearBusy);
             }
           
         }
+
+        //When animation is complete OnLayEggAnimationComplete() invokes ClearBusy()
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -106,12 +114,14 @@ public class UnitActionSystem : MonoBehaviour
     private void SetSelectedUnit(Unit unit)
     {
         selectedUnit = unit;
-        OnSelectedUnit?.Invoke(this, EventArgs.Empty);
+        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public Unit GetSelectedUnit()
     {
         return selectedUnit;
     }
+
+    
 
 }
