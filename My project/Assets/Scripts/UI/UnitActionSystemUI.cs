@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 
 public class UnitActionSystemUI : MonoBehaviour
@@ -9,11 +11,20 @@ public class UnitActionSystemUI : MonoBehaviour
     [SerializeField] private Transform actionButtonPrefab;
     [SerializeField] private Transform actionButtonContainerTransform;
 
+    private List<ActionButtonUI> actionButtonUIList;
+
+
+    private void Awake()
+    {
+        actionButtonUIList = new List<ActionButtonUI>();
+    }
 
     private void Start()
     {
         UnitActionSystem.Instance.OnSelectedUnitChanged += UnitActionSystem_OnSelectedUnitChanged; 
+        UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged; 
         CreateUnitActionButtons();
+        UpdateSelectedVisual();
     }
 
     // Method to insantiate Action button prefabs onto the screen 
@@ -25,6 +36,8 @@ public class UnitActionSystemUI : MonoBehaviour
             Destroy(buttonTransform.gameObject);
         }
 
+        actionButtonUIList.Clear();
+
         Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
 
         foreach( BaseAction baseAction in selectedUnit.GetBaseActionArray())
@@ -33,6 +46,9 @@ public class UnitActionSystemUI : MonoBehaviour
             ActionButtonUI actionButtonUI = actionButtonTransform.GetComponent<ActionButtonUI>();
 
             actionButtonUI.SetBaseAction(baseAction);
+
+            // Stores each action button into list
+            actionButtonUIList.Add(actionButtonUI);
 
         }
 
@@ -47,6 +63,21 @@ public class UnitActionSystemUI : MonoBehaviour
     private void UnitActionSystem_OnSelectedUnitChanged(object sender , EventArgs e)
     {
         CreateUnitActionButtons();
+        UpdateSelectedVisual();
+    }
+
+    private void UnitActionSystem_OnSelectedActionChanged(object sender , EventArgs e)
+    {
+        UpdateSelectedVisual();
+    }
+
+    // Updates selectedAction visual based on if the action button is the selected
+    private void UpdateSelectedVisual()
+    {
+        foreach(ActionButtonUI actionButtonUI in actionButtonUIList)
+        {
+            actionButtonUI.UpdateSelectedVisual();
+        }
     }
 
 }

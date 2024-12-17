@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LayAction : BaseAction
@@ -25,7 +26,9 @@ public class LayAction : BaseAction
 
 
     //The onActionComplete delegate allows us to pass in a function such as ClearBusy to be invoked when the animations finishes 
-    public void LayEggAnimation(Action onActionComplete)
+
+    // The gridPosition parameter is never used for this action
+    public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
         this.OnActionComplete = onActionComplete;
         //this.onLayEggComplete = onLayEggComplete;
@@ -44,6 +47,17 @@ public class LayAction : BaseAction
     public override string GetActionName()
     {
         return "LayEgg";
+    }
+
+
+    public override List<GridPosition> GetValidActionGridPositionList()
+    {
+        GridPosition unitGridPosition = unit.GetGridPosition();
+
+        return new List<GridPosition>
+        {
+            unitGridPosition,
+        };
     }
 
 }

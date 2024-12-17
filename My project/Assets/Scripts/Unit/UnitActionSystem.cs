@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /* 
  * Allocated the script to run before default time so it's functions are read 1st before any other scripts functions
@@ -12,6 +13,7 @@ public class UnitActionSystem : MonoBehaviour
     public static UnitActionSystem Instance { get; private set; }
 
     public event EventHandler OnSelectedUnitChanged;
+    public event EventHandler OnSelectedActionChanged;
 
 
 
@@ -48,6 +50,12 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
 
+        // Checks if the mouse is over a button
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
         /* 
          * Clear isBusy state by using delegates
          * pass through the clearbusy function as a delegate. 
@@ -66,7 +74,11 @@ public class UnitActionSystem : MonoBehaviour
 
     }
 
-
+    /*
+     * There are 2 ways in this function to switch between actions 
+     * The one commented out uses a simple switch with its required validations
+     * The other uses a generic take action function extended from the base class 
+    */
     private void HandleSelectedAction()
     {
         if (Input.GetMouseButtonDown(0))
@@ -74,6 +86,13 @@ public class UnitActionSystem : MonoBehaviour
 
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
 
+            if (selectedAction.IsValidActionGridPosition(mouseGridPosition))
+            {
+                SetBusy();
+                selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+            }
+
+            /*
             switch (selectedAction)
             {
                 case MoveAction moveAction:
@@ -82,7 +101,6 @@ public class UnitActionSystem : MonoBehaviour
                         SetBusy();
                         moveAction.Move(mouseGridPosition, ClearBusy);
                     }
-                    moveAction.Move(mouseGridPosition, ClearBusy);
                     break;
                 case LayAction layAction:
                     SetBusy();
@@ -90,6 +108,7 @@ public class UnitActionSystem : MonoBehaviour
                     layAction.LayEggAnimation(ClearBusy);
                     break;
             }
+            */
         }
     }
 
@@ -124,6 +143,11 @@ public class UnitActionSystem : MonoBehaviour
                 // trys to get a component of a given type
                  if(raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
                  {
+                    if(unit == selectedUnit)
+                    {
+                        // This unit is already selected
+                        return false;
+                    }
                      SetSelectedUnit(unit);
                      return true;
                  }
@@ -146,6 +170,7 @@ public class UnitActionSystem : MonoBehaviour
     public void SetSelectedAction(BaseAction baseAction)
     {
         selectedAction = baseAction;
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);   
     }
 
     public Unit GetSelectedUnit()
@@ -153,6 +178,9 @@ public class UnitActionSystem : MonoBehaviour
         return selectedUnit;
     }
 
-    
+    public BaseAction GetSelectedAction()
+    {
+        return selectedAction;
+    }
 
 }

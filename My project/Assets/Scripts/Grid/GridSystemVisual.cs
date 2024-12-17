@@ -69,12 +69,13 @@ public class GridSystemVisual : MonoBehaviour
         }
     }
 
+    // GridVisual is updated based on the action in current use 
     private void UpdateGridVisual()
     {
         HideAllGridPositions();
 
-        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
-        ShowAllGridPositionList(selectedUnit.GetMoveAction().GetValidActionGridPositionList());
+        BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
+        ShowAllGridPositionList(selectedAction.GetValidActionGridPositionList());
     }
 
 }
