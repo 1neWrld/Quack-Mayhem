@@ -15,6 +15,11 @@ public class UnitActionSystem : MonoBehaviour
     public event EventHandler OnSelectedUnitChanged;
     public event EventHandler OnSelectedActionChanged;
 
+    //An Event thats of type bool... takes a bool parameter
+    public event EventHandler<bool> OnActionBusy;
+    public event EventHandler OnActionStarted;
+    
+
 
 
 
@@ -85,12 +90,20 @@ public class UnitActionSystem : MonoBehaviour
         {
 
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
-
-            if (selectedAction.IsValidActionGridPosition(mouseGridPosition))
+            if (!selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                SetBusy();
-                selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+                return;
             }
+
+            if (!selectedUnit.TrySpendActionPointsToTakeAction(selectedAction))
+            {
+                return;
+            }
+            
+            SetBusy();
+            selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+
+            OnActionStarted?.Invoke(this, EventArgs.Empty);
 
             /*
             switch (selectedAction)
@@ -116,11 +129,15 @@ public class UnitActionSystem : MonoBehaviour
     private void SetBusy()
     {
         isBusy = true;
+
+        OnActionBusy?.Invoke(this, isBusy);
+
     }
 
     private void ClearBusy()
     {
         isBusy = false;
+        OnActionBusy?.Invoke(this, isBusy);
     }
 
 

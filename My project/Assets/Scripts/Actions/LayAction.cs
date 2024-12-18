@@ -60,4 +60,9 @@ public class LayAction : BaseAction
         };
     }
 
+    public override int GetActionPointsCost()
+    {
+        return 2;
+    }
+
 }
