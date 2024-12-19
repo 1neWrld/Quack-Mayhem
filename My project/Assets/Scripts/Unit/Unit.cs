@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -14,6 +15,8 @@ public class Unit : MonoBehaviour
     private BaseAction[] baseActionArray;
 
     private int actionPoints = 2;
+
+    [SerializeField] private bool isEnemy; 
 
     private void Awake()
     {
@@ -64,6 +67,12 @@ public class Unit : MonoBehaviour
         return gridPosition;
     }
 
+    public Vector3 GetWorldPosition()
+    {
+        return transform.position;
+    }
+
+
     public BaseAction[] GetBaseActionArray()
     {
         return baseActionArray;
@@ -110,9 +119,23 @@ public class Unit : MonoBehaviour
 
     private void TurnSystem_onTurnChanged(object sender, EventArgs e)
     {
-        actionPoints = ACTION_POINTS_MAX;
+        //Resets action points for enemy and ally units when its their turn 
+        if((IsEnemy() && !TurnSystem.Instance.IsPlayerTurn()) || (!IsEnemy() && TurnSystem.Instance.IsPlayerTurn()))
+        {    
+            actionPoints = ACTION_POINTS_MAX;
 
-        OnAnyActionPointChanged?.Invoke(this, EventArgs.Empty);
+            OnAnyActionPointChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public bool IsEnemy()
+    {
+        return isEnemy;
+    }
+
+    public void Damage()
+    {
+        Debug.Log(transform + "Shot!");
     }
 
 }

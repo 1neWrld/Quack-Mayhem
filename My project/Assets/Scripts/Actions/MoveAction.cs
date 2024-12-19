@@ -12,7 +12,9 @@ using UnityEngine;
 public class MoveAction : BaseAction
 {
 
-    private const string IS_WALKING = "IsMoving";
+    public event EventHandler OnStartMoving;
+    public event EventHandler OnStopMoving;
+
     private Animator animator;
 
     [SerializeField] private int maxMoveDistance = 4;
@@ -53,16 +55,11 @@ public class MoveAction : BaseAction
         {
             float moveSpeed = 7f;
             transform.position += moveDir * Time.deltaTime * moveSpeed;
-
-            animator.SetBool(IS_WALKING, true);
         }
         else
         {
-            animator.SetBool(IS_WALKING, false);
-            isActive = false;
-
-            OnActionComplete();
-
+            OnStopMoving?.Invoke(this, EventArgs.Empty);
+            ActionComplete();
         }
 
         // Handles rotation by manipulating the units forward direction... Faces towards target position
@@ -75,9 +72,11 @@ public class MoveAction : BaseAction
     // function to move object to targeted position
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        this.OnActionComplete= onActionComplete;
+        ActionStart(onActionComplete);
         this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-        isActive = true;
+
+        OnStartMoving?.Invoke(this, EventArgs.Empty);
+
     }
 
     public override List<GridPosition> GetValidActionGridPositionList()

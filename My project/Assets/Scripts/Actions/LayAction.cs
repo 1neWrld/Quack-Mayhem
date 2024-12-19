@@ -9,13 +9,8 @@ public class LayAction : BaseAction
      * The signature of the delegate must match the one(function) you pass through
     */
 
-    private Animator animator;
-
-    private void Start()
-    {
-        animator = GetComponentInChildren<Animator>();
-    }
-
+    public event EventHandler OnLayEgg;
+   
     private void Update()
     {
         if (!isActive)
@@ -30,18 +25,13 @@ public class LayAction : BaseAction
     // The gridPosition parameter is never used for this action
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        this.OnActionComplete = onActionComplete;
-        //this.onLayEggComplete = onLayEggComplete;
-        animator.SetTrigger("Lay");
-        isActive = false;
-
+       ActionStart(onActionComplete);
+       OnLayEgg?.Invoke(this, EventArgs.Empty);
     }
 
     public void OnLayEggAnimationComplete()
     {
-        isActive = false;
-
-        OnActionComplete();
+        ActionComplete();
     }
 
     public override string GetActionName()

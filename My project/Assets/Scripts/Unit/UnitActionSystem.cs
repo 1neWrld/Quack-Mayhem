@@ -55,6 +55,11 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
 
+        if (!TurnSystem.Instance.IsPlayerTurn())
+        {
+            return;
+        }
+
         // Checks if the mouse is over a button
         if (EventSystem.current.IsPointerOverGameObject())
         {
@@ -165,6 +170,13 @@ public class UnitActionSystem : MonoBehaviour
                         // This unit is already selected
                         return false;
                     }
+
+                    if (unit.IsEnemy())
+                    {
+                        // Unit is an enemy
+                        return false;
+                    }
+
                      SetSelectedUnit(unit);
                      return true;
                  }
