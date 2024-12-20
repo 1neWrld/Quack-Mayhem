@@ -82,7 +82,6 @@ public class UnitAnimator : MonoBehaviour
 
     private void UnitWorldUI_OnDamagePopUp(object sender, EventArgs e)
     {
-        Debug.Log("DamagePopUp Activate");
         popUpAnimator.SetTrigger(DAMAGE_POPUP);
     }
 

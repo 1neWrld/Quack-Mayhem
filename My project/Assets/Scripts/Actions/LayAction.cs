@@ -25,8 +25,8 @@ public class LayAction : BaseAction
     // The gridPosition parameter is never used for this action
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-       ActionStart(onActionComplete);
        OnLayEgg?.Invoke(this, EventArgs.Empty);
+       ActionStart(onActionComplete);
     }
 
     public void OnLayEggAnimationComplete()

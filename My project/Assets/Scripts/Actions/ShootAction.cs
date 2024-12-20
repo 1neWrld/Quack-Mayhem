@@ -104,7 +104,6 @@ public class ShootAction : BaseAction
         damageAmount = UnityEngine.Random.Range(10, 41);
 
         targetUnit.Damage(damageAmount);
-        Debug.Log(damageAmount);
 
         // Access the targets UnitWorldUI component to activate popUp
         UnitWorldUI targetUnitWorldUI = targetUnit.GetComponentInChildren<UnitWorldUI>();
@@ -173,7 +172,6 @@ public class ShootAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        ActionStart(onActionComplete);
 
         targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
 
@@ -183,6 +181,7 @@ public class ShootAction : BaseAction
         float aimingStateTime = 1f;
         stateTimer = aimingStateTime;
 
+        ActionStart(onActionComplete);
 
     }
 

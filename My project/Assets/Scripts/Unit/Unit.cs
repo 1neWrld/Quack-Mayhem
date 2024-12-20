@@ -8,7 +8,8 @@ public class Unit : MonoBehaviour
     private const int ACTION_POINTS_MAX = 2;
 
     public static event EventHandler OnAnyActionPointChanged;
-
+    public static event EventHandler OnAnyUnitSpawned;
+    public static event EventHandler OnAnyUnitDead;
 
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
@@ -39,6 +40,8 @@ public class Unit : MonoBehaviour
 
         TurnSystem.Instance.onTurnChanged += TurnSystem_onTurnChanged;
         healthSystem.OnDead += HealthSystem_OnDead;
+
+        OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
 
     }
 
@@ -150,6 +153,9 @@ public class Unit : MonoBehaviour
 
         // Instantiate ghost prefab at the exact position and rotation as the killed unit
         Instantiate(ghostPrefab, transform.position, transform.rotation);
+
+        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
+
     }
 
 
