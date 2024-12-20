@@ -85,4 +85,9 @@ public class UnitWorldUI : MonoBehaviour
         damagePopUp.gameObject.SetActive(false);
     }
 
+    public void DamagePopUpAnimationComplete()
+    {
+        Hide();
+    }
+
 }

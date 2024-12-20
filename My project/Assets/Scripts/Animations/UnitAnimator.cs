@@ -16,6 +16,7 @@ public class UnitAnimator : MonoBehaviour
 
 
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator popUpAnimator;
     [SerializeField] private Transform bulletProjectilePrefab;
     [SerializeField] private Transform shootPointTransform;
 
@@ -43,9 +44,7 @@ public class UnitAnimator : MonoBehaviour
 
     private void Start()
     {
-
         unitWorldUI= GetComponentInChildren<UnitWorldUI>();
-
         unitWorldUI.OnDamagePopUp += UnitWorldUI_OnDamagePopUp;
     }
 
@@ -84,7 +83,7 @@ public class UnitAnimator : MonoBehaviour
     private void UnitWorldUI_OnDamagePopUp(object sender, EventArgs e)
     {
         Debug.Log("DamagePopUp Activate");
-        animator.SetTrigger(DAMAGE_POPUP);
+        popUpAnimator.SetTrigger(DAMAGE_POPUP);
     }
 
 }

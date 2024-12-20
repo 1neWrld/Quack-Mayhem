@@ -8,7 +8,7 @@ using UnityEngine;
  * 
 */ 
 
-public class AnimationEventBridge : MonoBehaviour
+public class UnitAnimationEventBridge : MonoBehaviour
 {
     [SerializeField] LayAction layAction;
 
