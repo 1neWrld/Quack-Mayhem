@@ -6,7 +6,8 @@ using UnityEngine;
 public abstract class BaseAction : MonoBehaviour
 {
     protected Unit unit;
-    protected bool isActive;
+    protected bool isActive; 
+    protected int damageAmount;
 
     // Callback function to clear actions in order for player to do another 
     protected Action onActionComplete;

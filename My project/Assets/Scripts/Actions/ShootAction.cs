@@ -6,6 +6,7 @@ public class ShootAction : BaseAction
 {
 
     public event EventHandler<OnShootEventArgs> OnShoot;
+    public event EventHandler OnDamageTaken;
 
     //Eventargs class 
     //Add extra data to our event
@@ -27,6 +28,7 @@ public class ShootAction : BaseAction
     private float stateTimer;
     private Unit targetUnit;
     private bool canShootBullet;
+
 
     private void Update()
     {
@@ -98,7 +100,20 @@ public class ShootAction : BaseAction
             shootingUnit = unit
         });
 
-        targetUnit.Damage(40);
+        //Set the damageAmount to a random range between 10 and 40
+        damageAmount = UnityEngine.Random.Range(10, 41);
+
+        targetUnit.Damage(damageAmount);
+        Debug.Log(damageAmount);
+
+        // Access the targets UnitWorldUI component to activate popUp
+        UnitWorldUI targetUnitWorldUI = targetUnit.GetComponentInChildren<UnitWorldUI>();
+        if (targetUnitWorldUI != null)
+        {
+           targetUnitWorldUI.ShowDamage(damageAmount);
+        }
+
+        OnDamageTaken?.Invoke(this, EventArgs.Empty);
     }
 
     public override string GetActionName()
@@ -170,4 +185,15 @@ public class ShootAction : BaseAction
 
 
     }
+
+    public int GetDamageAmount()
+    {
+        return damageAmount;
+    }
+
+    public Unit GetTargetUnit()
+    {
+        return targetUnit;
+    }
+
 }

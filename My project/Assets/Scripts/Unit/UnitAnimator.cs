@@ -12,6 +12,8 @@ public class UnitAnimator : MonoBehaviour
     private const string IS_WALKING = "IsMoving";
     private const string SHOOT = "Shoot";
     private const string LAY_EGG = "Lay";
+    private const string DAMAGE_POPUP = "PopUp";
+
 
     [SerializeField] private Animator animator;
     [SerializeField] private Transform bulletProjectilePrefab;
@@ -32,6 +34,10 @@ public class UnitAnimator : MonoBehaviour
         if(TryGetComponent<LayAction>(out LayAction layAction))
         {
             layAction.OnLayEgg += LayAction_OnLayEgg;
+        }
+        if(TryGetComponent<UnitWorldUI>(out UnitWorldUI unitWorldUI))
+        {
+            unitWorldUI.OnDamagePopUp += UnitWorldUI_OnDamagePopUp;
         }
     }
 
@@ -65,6 +71,11 @@ public class UnitAnimator : MonoBehaviour
     private void LayAction_OnLayEgg(object sender, EventArgs e)
     {
         animator.SetTrigger(LAY_EGG);
+    }
+
+    private void UnitWorldUI_OnDamagePopUp(object sender, EventArgs e)
+    {
+        animator.SetTrigger(DAMAGE_POPUP);
     }
 
 }

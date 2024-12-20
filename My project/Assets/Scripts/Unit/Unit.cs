@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour
 
     public static event EventHandler OnAnyActionPointChanged;
 
+
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
     private MoveAction moveAction;
@@ -147,7 +148,7 @@ public class Unit : MonoBehaviour
         LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
         Destroy(this.gameObject);
 
-
+        // Instantiate ghost prefab at the exact position and rotation as the killed unit
         Instantiate(ghostPrefab, transform.position, transform.rotation);
     }
 
