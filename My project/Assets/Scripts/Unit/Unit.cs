@@ -10,18 +10,22 @@ public class Unit : MonoBehaviour
     public static event EventHandler OnAnyActionPointChanged;
 
     private GridPosition gridPosition;
+    private HealthSystem healthSystem;
     private MoveAction moveAction;
     private LayAction layAction;
     private BaseAction[] baseActionArray;
 
+
     private int actionPoints = 2;
 
-    [SerializeField] private bool isEnemy; 
+    [SerializeField] private bool isEnemy;
+    [SerializeField] Transform ghostPrefab;
 
     private void Awake()
     {
         moveAction = GetComponent<MoveAction>();
         layAction = GetComponent<LayAction>();
+        healthSystem = GetComponent<HealthSystem>();
 
         // store all the components attached to the unit that extend from BaseAction
         baseActionArray = GetComponents<BaseAction>();
@@ -33,6 +37,7 @@ public class Unit : MonoBehaviour
         LevelGrid.Instance.AddUnitAtGridPosition( gridPosition, this);
 
         TurnSystem.Instance.onTurnChanged += TurnSystem_onTurnChanged;
+        healthSystem.OnDead += HealthSystem_OnDead;
 
     }
 
@@ -133,9 +138,18 @@ public class Unit : MonoBehaviour
         return isEnemy;
     }
 
-    public void Damage()
+    public void Damage(int damageAmount)
     {
-        Debug.Log(transform + "Shot!");
+        healthSystem.TakeDamage(damageAmount);
     }
+    private void HealthSystem_OnDead(object sender, EventArgs e)
+    {
+        LevelGrid.Instance.RemoveUnitAtGridPosition(gridPosition, this);
+        Destroy(this.gameObject);
+
+
+        Instantiate(ghostPrefab, transform.position, transform.rotation);
+    }
+
 
 }

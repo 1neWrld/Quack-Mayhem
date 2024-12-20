@@ -43,4 +43,11 @@ public class SelectedUnitVisual : MonoBehaviour
         }
     }
 
+    // Built in function that is called when the object is destroyed
+    // When unit is destroyed the event unsubscribes;
+    private void OnDestroy()
+    {
+        UnitActionSystem.Instance.OnSelectedUnitChanged -= UnitActionSystem_OnSelectedUnit;
+    }
+
 }

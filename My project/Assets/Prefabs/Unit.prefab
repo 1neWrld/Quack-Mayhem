@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 9102805145387978820}
   - component: {fileID: -1958307663494680136}
   - component: {fileID: -3217679750841559384}
+  - component: {fileID: 6869980709532461424}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -778,6 +779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEnemy: 0
+  ghostPrefab: {fileID: 4742853096560774839, guid: 740289b580b739a409b5570d497c831f, type: 3}
 --- !u!135 &2086648758546762463
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -851,6 +853,19 @@ MonoBehaviour:
   animator: {fileID: 6216398683297104700}
   bulletProjectilePrefab: {fileID: 8956831702715535093, guid: 354b032853d5f754492bb8a7a03785cb, type: 3}
   shootPointTransform: {fileID: 7119058107111198636}
+--- !u!114 &6869980709532461424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084796669037721225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7bf652cea0f189438fe60637e7191fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
 --- !u!1001 &156556219018973184
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1125,7 +1140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4620998167008108, guid: c25ac4fdc903e7d49a7520930673ecd6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.19076926
+      value: 0.1907693
       objectReference: {fileID: 0}
     - target: {fileID: 4620998167008108, guid: c25ac4fdc903e7d49a7520930673ecd6, type: 3}
       propertyPath: m_LocalPosition.z
