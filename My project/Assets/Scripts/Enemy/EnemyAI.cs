@@ -83,9 +83,6 @@ public class EnemyAI : MonoBehaviour
     private bool TryTakeEnemyAIAction(Action onEnemyAIActionComplete)
     {
 
-       
-
-        Debug.Log("Take an enemy actiion");
         foreach (Unit enemyUnit in UnitManager.Instance.GetEnemyUnitList())
         {
 
@@ -106,22 +103,43 @@ public class EnemyAI : MonoBehaviour
 
     private bool TryTakeEnemyAIAction(Unit enemyUnit, Action onEnemyAIActionComplete)
     {
-        LayAction layAction = enemyUnit.GetLayAction();
+        EnemyAIAction bestEnemyAIAction = null;
+        BaseAction bestBaseAction = null;
 
-        GridPosition actionGridPosition = enemyUnit.GetGridPosition();
-        if (!layAction.IsValidActionGridPosition(actionGridPosition))
+        foreach (BaseAction baseAction in enemyUnit.GetBaseActionArray())
+        {
+            if (!enemyUnit.CanSpendActionPointsToTakeAction(baseAction))
+            {
+                //Enemy can't afford action
+                continue;
+            }
+
+            if (bestEnemyAIAction == null)
+            {
+                bestEnemyAIAction = baseAction.GetBestEnemyAIAction();
+                bestBaseAction = baseAction;
+            }
+            else
+            {
+                EnemyAIAction testEnemyAIAction = baseAction.GetBestEnemyAIAction();
+                if (testEnemyAIAction != null && testEnemyAIAction.actionValue > bestEnemyAIAction.actionValue)
+                {
+                    bestEnemyAIAction = testEnemyAIAction;
+                    bestBaseAction = baseAction;
+                }
+            }
+
+        }
+
+
+        if (bestEnemyAIAction != null && enemyUnit.TrySpendActionPointsToTakeAction(bestBaseAction))
+        {
+            bestBaseAction.TakeAction(bestEnemyAIAction.gridPosition, onEnemyAIActionComplete);
+            return true;
+        }
+        else
         {
             return false;
         }
-
-        if (!enemyUnit.TrySpendActionPointsToTakeAction(layAction))
-        {
-            return false;
-        }
-
-        Debug.Log("Doing a Lay Action");
-        layAction.TakeAction(actionGridPosition, onEnemyAIActionComplete);
-        return true;
     }
-
 }

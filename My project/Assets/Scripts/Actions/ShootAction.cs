@@ -120,11 +120,15 @@ public class ShootAction : BaseAction
         return "Shoot";
     }
 
-
     public override List<GridPosition> GetValidActionGridPositionList()
     {
-        List<GridPosition> validGridPositionList = new List<GridPosition>();
         GridPosition unitGridPosition = unit.GetGridPosition();
+        return GetValidActionGridPositionList(unitGridPosition);
+    }
+
+    public List<GridPosition> GetValidActionGridPositionList(GridPosition unitGridPosition)
+    {
+        List<GridPosition> validGridPositionList = new List<GridPosition>();
 
         // Nested Loop to store valid gridpositions 4 units to the left, right, up and down. 
         // based on units current position
@@ -193,6 +197,28 @@ public class ShootAction : BaseAction
     public Unit GetTargetUnit()
     {
         return targetUnit;
+    }
+
+    public override EnemyAIAction GetEnemyAIAction(GridPosition gridPosition)
+    {
+
+       Unit targetUnit =  LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
+      
+
+        return new EnemyAIAction
+        {
+
+            gridPosition = gridPosition,
+
+            //Shooting a unit with half health will give a higher actionValue
+            actionValue = 100 + Mathf.RoundToInt((1 - targetUnit.GetHealthNormalized())*100),
+
+        };
+    }
+
+    public int GetTargetCountAtPosition(GridPosition gridPosition)
+    {
+        return GetValidActionGridPositionList(gridPosition).Count;
     }
 
 }

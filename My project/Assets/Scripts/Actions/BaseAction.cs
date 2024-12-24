@@ -61,4 +61,39 @@ public abstract class BaseAction : MonoBehaviour
         return unit;
     }
 
+    // Cycles through gridPositions calculates an AIAction, returns best one
+    public EnemyAIAction GetBestEnemyAIAction()
+    {
+        List<EnemyAIAction> enemyAIActionList = new List<EnemyAIAction>();
+
+        List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
+
+        // Cycle through the validGridPositions in the list and create a valid action for the enemy to take.. Add it to the enemyAiAction list
+        foreach(GridPosition gridPosition in validActionGridPositionList)
+        {
+            EnemyAIAction enemyAIAction = GetEnemyAIAction(gridPosition);
+            enemyAIActionList.Add(enemyAIAction);
+        }
+
+        if(enemyAIActionList.Count > 0)
+        {
+           // Sort list to get the best enemyAIAction
+            //List is sorted based on ActionValue
+           enemyAIActionList.Sort((EnemyAIAction a, EnemyAIAction b) => b.actionValue - a.actionValue);
+
+             return enemyAIActionList[0];
+
+        }
+        else
+        {
+            //No possible enemyAIActions
+            return null;
+        }
+
+
+    }
+
+    // abstract class of type enemyAIAction that calculates a score for each action
+    public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
+
 }

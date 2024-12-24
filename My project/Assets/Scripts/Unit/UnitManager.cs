@@ -16,7 +16,7 @@ public class UnitManager : MonoBehaviour
 
         if (Instance != null)
         {
-            Debug.LogError("There is more than one EnemyAI" + transform + Instance);
+            Debug.LogError("There is more than one UnitManager" + transform + Instance);
             Destroy(gameObject);
         }
 
@@ -25,6 +25,8 @@ public class UnitManager : MonoBehaviour
         unitList = new List<Unit>();
         friendlyUnitList = new List<Unit>();
         enemyUnitList = new List<Unit>();
+
+
     }
 
     private void Start()
@@ -38,7 +40,6 @@ public class UnitManager : MonoBehaviour
     {
         Unit unit = sender as Unit;
 
-        Debug.Log(unit + "Spawned");
 
         unitList.Add(unit);
         if (unit.IsEnemy())
@@ -55,7 +56,6 @@ public class UnitManager : MonoBehaviour
     {
         Unit unit = sender as Unit;
 
-        Debug.Log(unit + "Dead");
         unitList.Remove(unit);
         if (unit.IsEnemy())
         {

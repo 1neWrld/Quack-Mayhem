@@ -15,6 +15,7 @@ public class Unit : MonoBehaviour
     private HealthSystem healthSystem;
     private MoveAction moveAction;
     private LayAction layAction;
+    private ShootAction shootAction;
     private BaseAction[] baseActionArray;
 
 
@@ -27,6 +28,7 @@ public class Unit : MonoBehaviour
     {
         moveAction = GetComponent<MoveAction>();
         layAction = GetComponent<LayAction>();
+        shootAction = GetComponent<ShootAction>();
         healthSystem = GetComponent<HealthSystem>();
 
         // store all the components attached to the unit that extend from BaseAction
@@ -69,6 +71,11 @@ public class Unit : MonoBehaviour
     public LayAction GetLayAction()
     {
         return layAction;
+    }
+
+    public ShootAction GetShootAction()
+    {
+        return shootAction;
     }
 
     public GridPosition GetGridPosition()
@@ -158,5 +165,9 @@ public class Unit : MonoBehaviour
 
     }
 
+    public float GetHealthNormalized()
+    {
+        return healthSystem.GetHealthNormalized();
+    }
 
 }
