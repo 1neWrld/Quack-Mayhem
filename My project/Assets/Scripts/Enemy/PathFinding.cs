@@ -15,6 +15,7 @@ public class Pathfinding : MonoBehaviour
     //A reference to a prefab for visualizing the grid
     [SerializeField] private Transform gridDebugObjectPrefab;
 
+    [SerializeField] private LayerMask obstaclesLayerMask;
 
     private int width;
     private int height;
@@ -29,13 +30,42 @@ public class Pathfinding : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        Instance = this;
+        Instance = this;    
+    }
+
+    public void SetUp(int width, int height, float cellSize)
+    {
+        this.width = width;
+        this.height = height;
+        this.cellSize = cellSize;
 
         // The use of a callBack function to create the pathNode's for each gridObject
         // Initializes a pathNode at each gridPosition
-        gridSystem = new GridSystem<PathNode>(10, 10, 2f,
+        gridSystem = new GridSystem<PathNode>(width, height, cellSize,
             (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
-        gridSystem.CreateDebugObject(gridDebugObjectPrefab);
+       // gridSystem.CreateDebugObject(gridDebugObjectPrefab);
+
+        for(int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                GridPosition gridPosition = new GridPosition(x,z);
+                
+                Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+                float rayCastOffsetDistance = 5f;
+
+                if(Physics.Raycast(
+                    worldPosition + Vector3.down * rayCastOffsetDistance, 
+                    Vector3.up, 
+                    rayCastOffsetDistance * 2,
+                    obstaclesLayerMask))
+                {
+                    GetNode(x,z).SetIsWalkable(false);
+                }
+
+            }
+        }
+
     }
 
     // A* algorithm to find the shortest path
@@ -96,6 +126,12 @@ public class Pathfinding : MonoBehaviour
             {
                 if (closedList.Contains(neighbourNode))
                 {
+                    continue;
+                }
+
+                if (!neighbourNode.IsWalkable())
+                {
+                    closedList.Add(neighbourNode);
                     continue;
                 }
 
