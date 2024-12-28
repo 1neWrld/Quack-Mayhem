@@ -1,6 +1,8 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class GridSystem
+public class GridSystem<TGridObject> 
 {
     /*
      * GridSystem script handles the making of our grid system in our game world
@@ -17,17 +19,18 @@ public class GridSystem
     private float  cellSize;
 
     // Store our gridObjects into our 2d Array
-    private GridObject[,] gridObjectArray;
+    private TGridObject[,] gridObjectArray;
 
     // Constructor to set up the grid dimensions
-    public GridSystem(int height, int width, float cellSize)
+    // Pass a delegate of type TGridObject as an argument to create gridObjects 
+    public GridSystem(int height, int width, float cellSize, Func<GridSystem<TGridObject>, GridPosition, TGridObject> createGridObject)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
 
         // size of our array is determined by the width and height
-        gridObjectArray = new GridObject[width, height];
+        gridObjectArray = new TGridObject[width, height];
 
         for(int x = 0; x < width; x++)
         {
@@ -36,7 +39,7 @@ public class GridSystem
                 GridPosition gridPosition = new GridPosition(x,z);
 
                 //for each x and z position we create a new gridObject instance
-                gridObjectArray[x,z] = new GridObject(this, gridPosition);
+                gridObjectArray[x,z] = createGridObject(this, gridPosition);
             }
         }
     }
@@ -79,7 +82,7 @@ public class GridSystem
     }
 
     // Function to return the gridObject 2D Array takes a parameter of type gridPositon
-    public GridObject GetGridObject(GridPosition gridPosition)
+    public TGridObject GetGridObject(GridPosition gridPosition)
     {
         return gridObjectArray[gridPosition.x, gridPosition.z];
     }

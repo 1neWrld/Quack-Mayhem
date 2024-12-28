@@ -5,20 +5,21 @@ using TMPro;
 public class GridDebugObject : MonoBehaviour
 {
    
-    private GridObject gridObject;
+    //Generic "object" type
+    private object gridObject;
     
     [SerializeField] private TextMeshPro gridDebugText;
 
-    public void SetGridDebugObject(GridObject gridObject)
+    public virtual void SetGridDebugObject(object gridObject)
     {
         this.gridObject = gridObject;
     }
 
 
 
-    public void Update()
+    protected virtual void Update()
     {
-        gridDebugText.text = gridObject.ToString()  ;
+        gridDebugText.text = gridObject.ToString();
     }
 
 }

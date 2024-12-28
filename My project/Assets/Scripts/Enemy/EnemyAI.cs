@@ -91,7 +91,6 @@ public class EnemyAI : MonoBehaviour
                 Debug.Log("Enemy Unit in enemyUnitListIsNull");
                 continue;
             }
-            Debug.Log("Take EnemyAI action");
             if (TryTakeEnemyAIAction(enemyUnit, onEnemyAIActionComplete))
             {    
                 return true;

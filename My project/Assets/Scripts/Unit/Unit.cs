@@ -13,9 +13,6 @@ public class Unit : MonoBehaviour
 
     private GridPosition gridPosition;
     private HealthSystem healthSystem;
-    private MoveAction moveAction;
-    private LayAction layAction;
-    private ShootAction shootAction;
     private BaseAction[] baseActionArray;
 
 
@@ -26,9 +23,6 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
-        moveAction = GetComponent<MoveAction>();
-        layAction = GetComponent<LayAction>();
-        shootAction = GetComponent<ShootAction>();
         healthSystem = GetComponent<HealthSystem>();
 
         // store all the components attached to the unit that extend from BaseAction
@@ -63,20 +57,21 @@ public class Unit : MonoBehaviour
 
     }
 
-    public MoveAction GetMoveAction()
+    // Using Generics we return an action that extends from BaseAction
+    public T GetAction<T>() where T : BaseAction
     {
-        return moveAction;
+        foreach(BaseAction baseAction in baseActionArray)
+        {
+            if(baseAction is T)
+            {
+                return (T)baseAction;
+            }
+        }
+
+        return null;
+
     }
 
-    public LayAction GetLayAction()
-    {
-        return layAction;
-    }
-
-    public ShootAction GetShootAction()
-    {
-        return shootAction;
-    }
 
     public GridPosition GetGridPosition()
     {
