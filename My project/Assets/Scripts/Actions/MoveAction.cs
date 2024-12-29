@@ -15,24 +15,13 @@ public class MoveAction : BaseAction
     public event EventHandler OnStartMoving;
     public event EventHandler OnStopMoving;
 
-    private Animator animator;
-
     [SerializeField] private int maxMoveDistance = 4;
 
 
     private float stoppingDistance = .1f;
 
-    private Vector3 targetPosition;
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        // Accesses the animator component within the child DuckVisual gameObject 
-        animator = GetComponentInChildren<Animator>();
-        // units stay exatly where they are if not selected/commanded to.
-        targetPosition = transform.position;
-    }
+    private List<Vector3> positionList;
+    private int currentPositionIndex;
 
     private void Update()
     {
@@ -42,9 +31,14 @@ public class MoveAction : BaseAction
             return;
         }
 
+        Vector3 targetPosition = positionList[currentPositionIndex];
 
         // Desired direction from the unit pos to targetPos normalized
         Vector3 moveDir = (targetPosition - transform.position).normalized;
+
+        // Handles rotation by manipulating the units forward direction... Faces towards target position
+        float rotateSpeed = 10f;
+        transform.forward += Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
 
         // prevent unit from continuously pulling past the stoppingDistance
         float distance = Vector3.Distance(transform.position, targetPosition);
@@ -58,21 +52,31 @@ public class MoveAction : BaseAction
         }
         else
         {
-            OnStopMoving?.Invoke(this, EventArgs.Empty);
-            ActionComplete();
-        }
+            currentPositionIndex++;
 
-        // Handles rotation by manipulating the units forward direction... Faces towards target position
-        float rotateSpeed = 10f;
-        transform.forward += Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
+            if(currentPositionIndex >= positionList.Count)
+            {
+                OnStopMoving?.Invoke(this, EventArgs.Empty);
+                ActionComplete();
+            }          
+        }
 
     }
 
 
-    // function to move object to targeted position
+    // function to move unit to targeted position
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+
+        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(unit.GetGridPosition(), gridPosition, out int pathLength);
+
+        currentPositionIndex = 0;
+        positionList = new List<Vector3>();
+
+        foreach(GridPosition pathGridPosition in pathGridPositionList)
+        {
+            positionList.Add(LevelGrid.Instance.GetWorldPosition(pathGridPosition));
+        }
 
         OnStartMoving?.Invoke(this, EventArgs.Empty);
 
@@ -108,7 +112,25 @@ public class MoveAction : BaseAction
                     //GridPosition you want to go to is occupied with another unit
                     continue;
                 }
-                
+
+                if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+                {
+                    continue;
+                }
+
+                if(!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
+                {
+                    continue;
+                }
+
+                int pathFindingDistanceMultiplier = 10;
+                if(Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > maxMoveDistance * pathFindingDistanceMultiplier)
+                {
+                    // Path length too long
+                    continue;
+                }
+
+
                 validGridPositionList.Add(testGridPosition);
 
             }

@@ -16,7 +16,7 @@ public class Unit : MonoBehaviour
     private BaseAction[] baseActionArray;
 
 
-    private int actionPoints = 2;
+    private int actionPoints = ACTION_POINTS_MAX;
 
     [SerializeField] private bool isEnemy;
     [SerializeField] Transform ghostPrefab;
