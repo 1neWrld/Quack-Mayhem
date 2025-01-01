@@ -47,6 +47,8 @@ public abstract class BaseAction : MonoBehaviour
 
     }
 
+
+
     protected void ActionComplete()
     {
         isActive = false;
@@ -55,6 +57,20 @@ public abstract class BaseAction : MonoBehaviour
         OnAnyActionCompleted?.Invoke(this, EventArgs.Empty);
 
     }
+
+    /*
+    protected void ShowDamageOnUnit(Unit targetUnit, int damageAmount)
+    {
+
+
+
+        UnitWorldUI targetUnitWorldUI = targetUnit.GetComponentInChildren<UnitWorldUI>();
+        if (targetUnitWorldUI != null)
+        {
+            targetUnitWorldUI.ShowDamage(damageAmount);
+        }
+    }
+    */
 
     public Unit GetUnit()
     {
@@ -95,5 +111,7 @@ public abstract class BaseAction : MonoBehaviour
 
     // abstract class of type enemyAIAction that calculates a score for each action
     public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
+
+
 
 }

@@ -1313,6 +1313,7 @@ GameObject:
   - component: {fileID: 7675709135452009983}
   - component: {fileID: 9102805145387978820}
   - component: {fileID: -1958307663494680136}
+  - component: {fileID: 5567052647431054670}
   - component: {fileID: -3217679750841559384}
   - component: {fileID: 6869980709532461424}
   m_Layer: 6
@@ -1415,6 +1416,19 @@ MonoBehaviour:
   obstaclesLayerMask:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &5567052647431054670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084796669037721225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a51f500a9401d6478841daf64eb2a46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eggBombProjectilePrefab: {fileID: 8963466993334404121, guid: 3bd49e33e185b9e468e63b3333960094, type: 3}
 --- !u!114 &-3217679750841559384
 MonoBehaviour:
   m_ObjectHideFlags: 0

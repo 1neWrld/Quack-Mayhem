@@ -4,7 +4,7 @@ public class DamagePopUpAnimationEventBridge : MonoBehaviour
 {
     [SerializeField] private UnitWorldUI unitWorldUI;
 
-    private void OnDamagePopUpAnimationComplete()
+    public void OnDamagePopUpAnimationComplete()
     {
         unitWorldUI.DamagePopUpAnimationComplete();
     }

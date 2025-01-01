@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ShootAction : BaseAction
 {
+    public static event EventHandler<OnShootEventArgs> OnAnyShoot;
+    public static event EventHandler OnDamageTaken;
 
     public event EventHandler<OnShootEventArgs> OnShoot;
-    public event EventHandler OnDamageTaken;
+
 
     //Eventargs class 
     //Add extra data to our event
@@ -95,6 +97,13 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
+
+        OnAnyShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = targetUnit,
+            shootingUnit = unit
+        });
+
         //Pass through required data for the event 
         OnShoot?.Invoke(this, new OnShootEventArgs
         {
@@ -103,9 +112,11 @@ public class ShootAction : BaseAction
         });
 
         //Set the damageAmount to a random range between 10 and 40
-        damageAmount = UnityEngine.Random.Range(10, 41);
+        damageAmount = UnityEngine.Random.Range(25, 41);
 
         targetUnit.Damage(damageAmount);
+
+        //ShowDamageOnUnit(targetUnit,damageAmount);
 
         // Access the targets UnitWorldUI component to activate popUp
         UnitWorldUI targetUnitWorldUI = targetUnit.GetComponentInChildren<UnitWorldUI>();
@@ -113,7 +124,7 @@ public class ShootAction : BaseAction
         {
            targetUnitWorldUI.ShowDamage(damageAmount);
         }
-
+        
         OnDamageTaken?.Invoke(this, EventArgs.Empty);
     }
 

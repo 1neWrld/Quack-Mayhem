@@ -42,12 +42,12 @@ public class LayAction : BaseAction
 
     public override List<GridPosition> GetValidActionGridPositionList()
     {
-        GridPosition unitGridPosition = unit.GetGridPosition();
+            GridPosition unitGridPosition = unit.GetGridPosition();
 
-        return new List<GridPosition>
-        {
-            unitGridPosition,
-        };
+            return new List<GridPosition>
+            {
+                unitGridPosition,
+            };
     }
 
     public override int GetActionPointsCost()
