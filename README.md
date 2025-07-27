@@ -30,5 +30,5 @@ A Turn-Based Grid Strategy Game
 
 **Wandipa Marema**  
 🎓 Computer & Information Sciences  
-💻 Exploring C++ and software development  
+💻 Exploring C# and Game Development  
 🌍 GitHub: [@1neWrld](https://github.com/1neWrld)
