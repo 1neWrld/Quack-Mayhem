@@ -2,7 +2,8 @@
 
 A Turn-Based Grid Strategy Game
 
- Where ducks battle out using weaponry and tactics.
+ Where ducks battle out using weaponry and tactics. 
+ I have implemented good, clean coding practices, to ensure adding new mechanics to the game is quick, clean and efficient.
 
 ---
 
@@ -24,3 +25,10 @@ A Turn-Based Grid Strategy Game
 - **Version Control:** Git & GitHub
 
 ---
+
+## 🙋‍♂️ Author
+
+**Wandipa Marema**  
+🎓 Computer & Information Sciences  
+💻 Exploring C++ and software development  
+🌍 GitHub: [@1neWrld](https://github.com/1neWrld)
