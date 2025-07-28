@@ -1,4 +1,4 @@
-## 🦆 Quack Mayhem 
+## 🦆 Quack Mayhem (C#)
 
 A Turn-Based Grid Strategy Game
 
