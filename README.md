@@ -5,7 +5,8 @@ A Turn-Based Grid Strategy Game
  Where ducks battle out using weaponry and tactics. 
  I have implemented good, clean coding practices, to ensure adding new mechanics to the game is quick, clean and efficient.
 
-![Quack Mayhem gameplay preview](My project/Assets/Images/QuackMayhem_Gif.gif)
+![Quack Mayhem Preview](My%20project/Assets/Images/QuackMayhem_Gif.gif)
+
 
 ---
 
