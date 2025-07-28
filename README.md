@@ -3,7 +3,8 @@
 A Turn-Based Grid Strategy Game
 
  Where ducks battle out using weaponry and tactics. 
- I have implemented good, clean coding practices, to ensure adding new mechanics to the game is quick, clean and efficient.
+ I have implemented  AI Navigation (A* Pathfinding) with good, clean coding practices, to ensure adding new mechanics to the game is quick, clean and efficient.
+
 
 ![Quack Mayhem Preview](My%20project/Assets/Images/QuackMayhem_Gif.gif)
 
@@ -14,10 +15,10 @@ A Turn-Based Grid Strategy Game
 
 - A single player game, where players choose an action to inflict on the opposing opponent
   - 2 player feature will be implemented in future updates 
-- Choices to make are based pn a variety of actions
+- Choices to make are based on a variety of actions
+- Actions to do per turn are limit by the amount of action points available
 - Environment is set on a grid
-- Players can choose to move a duck from a radius of 2 units
-- 4 choices per turn
+- Players can choose to move a duck from a radius of 4 grids each direction
 - A cooldown is iminent per action done.
 
 ---
