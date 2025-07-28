@@ -12,7 +12,8 @@ A Turn-Based Grid Strategy Game
 
 ## 📌 Features
 
-- A single player game, where players choose an action to inflict on the opposing player
+- A single player game, where players choose an action to inflict on the opposing opponent
+  - 2 player feature will be implemented in future updates 
 - Choices to make are based pn a variety of actions
 - Environment is set on a grid
 - Players can choose to move a duck from a radius of 2 units
